@@ -37,12 +37,12 @@ class _MainScreenState extends State<MainScreen> {
             data: message,
             version: QrVersions.auto,
             eyeStyle: const QrEyeStyle(
-              eyeShape: QrEyeShape.square,
+              eyeShape: QrEyeShape.ellipse,
               color: Color(0xff128760),
             ),
             dataModuleStyle: const QrDataModuleStyle(
-              dataModuleShape: QrDataModuleShape.circle,
-              color: Color(0xff1a5441),
+              dataModuleShape: QrDataModuleShape.square,
+              color: Color(0xff818390),
             ),
             // size: 320.0,
             embeddedImage: snapshot.data,

@@ -47,6 +47,9 @@ enum QrEyeShape {
 
   /// Use circular eye frame.
   circle,
+
+  /// Use ellipse eye frame
+  ellipse,
 }
 
 /// Enumeration representing the shape of Data modules inside QR.
@@ -113,6 +116,7 @@ class QrEmbeddedImageStyle {
   QrEmbeddedImageStyle({
     this.size,
     this.color,
+    this.shape,
   });
 
   /// The size of the image. If one dimension is zero then the other dimension
@@ -122,6 +126,9 @@ class QrEmbeddedImageStyle {
 
   /// Color to tint the image.
   Color? color;
+
+  /// Shape to the image
+  Widget? shape;
 
   /// Check to see if the style object has a non-null, non-zero size.
   bool get hasDefinedSize => size != null && size!.longestSide > 0;
@@ -136,4 +143,14 @@ class QrEmbeddedImageStyle {
     }
     return false;
   }
+
+  Future<Widget> build(BuildContext context) async => Container(
+        decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: BorderRadius.all(
+            Radius.circular(60),
+          ),
+        ),
+        child: shape,
+      );
 }

@@ -27,6 +27,9 @@ const Color? _qrDefaultColor = null;
 
 /// A [CustomPainter] object that you can use to paint a QR code.
 class QrPainter extends CustomPainter {
+  Color? eyeBallColor;
+  Color? eyeColor;
+
   /// Create a new QRPainter with passed options (or defaults).
   QrPainter({
     required String data,
@@ -310,14 +313,14 @@ class QrPainter extends CustomPainter {
     final innerPaint = _paintCache.firstPaint(QrCodeElement.finderPatternInner,
         position: position)!;
     innerPaint.strokeWidth = metrics.pixelSize;
-    innerPaint.color = emptyColor ?? Color(0x00ffffff);
+    innerPaint.color = emptyColor ?? Color(0xff818390);
 
     final dotPaint = _paintCache.firstPaint(QrCodeElement.finderPatternDot,
         position: position);
     if (color != null) {
       dotPaint!.color = color!;
     } else {
-      dotPaint!.color = eyeStyle.color!;
+      dotPaint!.color = eyeBallColor ?? Color(0xff303A53);
     }
 
     final outerRect = Rect.fromLTWH(offset.dx, offset.dy, radius, radius);
@@ -335,6 +338,18 @@ class QrPainter extends CustomPainter {
       canvas.drawRect(outerRect, outerPaint);
       canvas.drawRect(innerRect, innerPaint);
       canvas.drawRect(dotRect, dotPaint);
+    } else if (eyeStyle.eyeShape == QrEyeShape.ellipse) {
+      final roundedOuterStrokeRect = RRect.fromRectAndRadius(
+          outerRect, Radius.elliptical(radius, radius * 1.15));
+      canvas.drawRRect(roundedOuterStrokeRect, outerPaint);
+
+      final roundedInnerStrokeRect = RRect.fromRectAndRadius(
+          outerRect, Radius.elliptical(radius, radius * 1.25));
+      canvas.drawRRect(roundedInnerStrokeRect, innerPaint);
+
+      final roundedDotStrokeRect = RRect.fromRectAndRadius(
+          dotRect, Radius.elliptical(radius, radius * 1.15));
+      canvas.drawRRect(roundedDotStrokeRect, dotPaint);
     } else {
       final roundedOuterStrokeRect =
           RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
